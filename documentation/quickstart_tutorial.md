@@ -377,6 +377,8 @@ insert thought isa role-type;
 insert knowledge has-role thinker, has-role thought;
 insert fact isa entity-type, plays-role thought;
 insert person plays-role thinker;
+insert description isa resource-type, datatype string;
+insert fact has-resource description;
 ```
 ```java
 RoleType thinker = mindmapsGraph.putRoleType("thinker");
@@ -391,9 +393,9 @@ Aristotle knew some astronomy, Plato knew a lot about caves and Socrates didn't
 really know anything at all.
 
 ```sql
-insert "sun-fact" isa fact, value "The Sun is bigger than the Earth";
+insert "sun-fact" isa fact, has description "The Sun is bigger than the Earth";
 insert (thinker "Aristotle", thought "sun-fact") isa knowledge;
-insert "cave-fact" isa fact, value "Caves are mostly pretty dark";
+insert "cave-fact" isa fact, has description "Caves are mostly pretty dark";
 insert (thinker "Plato", thought "cave-fact") isa knowledge;
 insert "nothing" isa fact;
 insert (thinker "Socrates", thought "nothing") isa knowledge;
