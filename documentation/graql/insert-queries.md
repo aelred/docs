@@ -9,7 +9,7 @@ $p isa pokemon, id "Pichu", has pokedex-no 172;
 qb.insert(
     var("p").isa("pokemon").id("Pichu").has("pokedex-no", 172),
     var().isa("evolution")
-        .rel("descendant", var().id("Pikachu"))
+        .rel("descendant", id("Pikachu"))
         .rel("ancestor", "p")
 ).execute();",
 ```
@@ -33,7 +33,7 @@ followed by a string.
 ### isa
 
 ```sql
-insert id "Totodile" isa pokemon;
+insert "Totodile" isa pokemon;
 ```
 ```java
 qb.insert(id("Totodile").isa("pokemon"));
@@ -44,7 +44,7 @@ Set the type of this concept.
 ### id
 
 ```sql
-insert id "Pikachu" isa pokemon
+insert "Pikachu" isa pokemon
 ```
 ```java
 qb.insert(id("Pikachu").isa("pokemon"));
@@ -56,18 +56,18 @@ The created or retrieved concept can then be modified with further properties.
 ### value
 
 ```sql
-insert id "trained-by" isa relation-type, value "Trained By";
+insert $my-pokedex-no isa pokedex-no, value 152;
 ```
 ```java
-qb.insert(id("trained-by").isa("relation-type").value("Trained By"));
+qb.insert(var("my-pokedex-no").isa("pokedex-no").value(152));
 ```
 
-Set the value of the concept.
+Set the value of a resource concept.
 
 ### has
 
 ```sql
-insert id "Pichu" isa pokemon has height 30;
+insert "Pichu" isa pokemon has height 30;
 ```
 ```java
 qb.insert(id("Pichu").isa("pokemon").has("height", 30));
@@ -99,7 +99,7 @@ The following properties only apply to types.
 ### ako
 
 ```sql
-insert id "gen2-pokemon" ako pokemon;
+insert gen2-pokemon ako pokemon;
 ```
 ```java
 qb.insert(id("gen2-pokemon").ako("pokemon"));
@@ -111,7 +111,7 @@ Set the super type of this concept type.
 
 ```sql
 insert
-id "trained-by" isa relation-type, has-role trainer, has-role pokemon-trained;
+trained-by isa relation-type, has-role trainer, has-role pokemon-trained;
 ```
 ```java
 qb.insert(

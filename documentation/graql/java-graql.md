@@ -8,8 +8,8 @@ Add the following to your `pom.xml`:
 ```xml
 <dependency>
   <groupId>io.mindmaps.graql</groupId>
-  <artifactId>graql-core</artifactId>
-  <version>0.2.1</version>
+  <artifactId>mindmaps-graql</artifactId>
+  <version>0.1.0</version>
 </dependency>
 ```
 
@@ -17,20 +17,17 @@ Add the following to your `pom.xml`:
 
 The `QueryBuilder` class is how you begin building Graql queries.
 
-`QueryBuilder` and `ValuePredicate` contains several useful static methods such
-as `var` and `eq`, so it's recommended that you use a static import:
+The `Graql` class is the entry-point. We recommend you use a static import:
 
 ```java
-import io.mindmaps.graql.api.query.QueryBuilder;
-import static io.mindmaps.graql.api.query.QueryBuilder.*;
-import static io.mindmaps.graql.api.query.ValuePredicate.*;
+import static io.mindmaps.graql.Graql.*;
 ```
 
 A `QueryBuilder` is constructed by providing a Mindmaps Graph:
 
 ```java
-MindmapsGraph graph = TinkerGraphFactory.getInstance().getGraph();
-QueryBuilder qb = new QueryBuilder(graph);
+MindmapsGraph graph = MindmapsClient.getGraph("my-graph");
+QueryBuilder qb = withGraph(graph);
 ```
 
 The `QueryBuilder` class provides methods for building `match`, `ask`,
@@ -50,12 +47,12 @@ MatchQuery tallPokemon = qb.match(var("x").isa("pokemon").has("height", gt(10)))
 
 ```java
 for (Map<String, Concept> result : tallPokemon) {
-  System.out.println(result.get("x").getValue());
+  System.out.println(result.get("x").getId());
 }
 
 tallPokemon.stream()
   .map(r -> r.get("x"))
-  .map(Concept::getValue)
+  .map(Concept::getId)
   .forEach(System.out::println);
 ```
 
@@ -64,7 +61,7 @@ tallPokemon.stream()
 Ask queries execute as soon as `execute()` is called:
 
 ```java
-if (qb.ask(var().isa("pokemon-type").value("dragon"))) {
+if (qb.ask(id("dragon").isa("pokemon-type"))) {
   System.out.println("Dragons are real!");
 }
 ```
@@ -74,7 +71,7 @@ if (qb.ask(var().isa("pokemon-type").value("dragon"))) {
 Insert queries execute as soon as `execute()` is called:
 
 ```java
-InsertQuery addPichu = qb.insert(var().id("Pichu").isa("pokemon"));
+InsertQuery addPichu = qb.insert(id("Pichu").isa("pokemon"));
 
 addPichu.execute();
 
@@ -84,7 +81,7 @@ qb.match(
 ).insert(
   var().isa("has-type")
     .rel("pokemon-with-type", "x")
-    .rel("type-of-pokemon", var().id("dragon"))
+    .rel("type-of-pokemon", id("dragon"))
 ).execute();
 ```
 
@@ -98,19 +95,11 @@ qb.match(var("x").id("Pichu")).delete("x").execute();
 
 ## Query Parser
 
-```xml
-<dependency>
-  <groupId>io.mindmaps.graql</groupId>
-  <artifactId>graql-parser</artifactId>
-  <version>0.2.1</version>
-</dependency>
-```
-
 The `QueryParser` allows the user to parse Graql query strings into Java Graql
 objects:
 
 ```java
-QueryParser parser = new QueryParser(graph);
+QueryParser parser = QueryParser.create(graph);
 
 parser.parseMatchQuery("match $x isa pokemon").getMatchQuery().get("x").forEach(System.out::println);
 
@@ -120,5 +109,5 @@ if (parser.parseAskQuery("match water isa pokemon-type ask").execute()) {
 
 parser.parseInsertQuery("insert id 'pichu' isa pokemon").execute();
 
-parser.parseDeleteQuery("match $x isa pokemon delete $x");
+parser.parseDeleteQuery("match $x isa pokemon delete $x").execute();
 ```
