@@ -81,8 +81,6 @@ Match concepts that have an `id` which matches the [predicate](#predicates).
 match $x value contains "lightning";
 ```
 ```java
-import static io.mindmaps.graql.api.query.ValuePredicate.*;
-
 qb.match(var("x").value(contains("lightning")))
 ```
 
@@ -95,8 +93,6 @@ the resource must match that predicate.
 match $x has pokedex-no < 20
 ```
 ```java
-import static io.mindmaps.graql.api.query.ValuePredicate.*;
-
 qb.match(var("x").has("pokedex-no", lt(20)));
 ```
 
@@ -169,8 +165,6 @@ If a concept doesn't have a value, all predicates are considered false.
 match $x has height = 19, has weight > 1500
 ```
 ```java
-import static io.mindmaps.graql.api.query.ValuePredicate.*;
-
 qb.match(var("x").has("height", 19).has("weight", gt(1500)));
 ```
 
@@ -184,8 +178,6 @@ match $x has description contains "underground"
 select $x(id, has description)
 ```
 ```java
-import static io.mindmaps.graql.api.query.ValuePredicate.*;
-
 qb.match(var("x").has("description", contains("underground")));
 ```
 
@@ -197,8 +189,6 @@ Asks if the given string is a substring.
 match $x value /.*(fast|quick).*/
 ```
 ```java
-import static io.mindmaps.graql.api.query.ValuePredicate.*;
-
 qb.match(var("x").value(regex(".*(fast|quick).*")));
 ```
 
@@ -212,8 +202,6 @@ surround the expression with `.*`.
 match $x has weight >20 and <30
 ```
 ```java
-import static io.mindmaps.graql.api.query.ValuePredicate.*;
-
 qb.match(var("x").has("weight", gt(20).and(lt(30))));
 ```
 

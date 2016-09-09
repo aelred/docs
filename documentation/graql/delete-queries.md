@@ -1,7 +1,7 @@
 # Delete Queries
 
 ```sql
-match $x isa pokemon delete $x
+match $x isa pokemon; delete $x
 ```
 ```java
 qb.match(var("x").isa("pokemon")).delete("x").execute();
@@ -11,7 +11,7 @@ A delete query will delete the specified [variable
 patterns](#variable-patterns) for every result of the [match
 query](match-query.md). If a variable pattern indicates just a variable, then
 the whole concept will be deleted. If it is more specific (such as indicating
-the `id` or `isa`) it will only delete the specified properties.
+a `plays-role` or `has`) it will only delete the specified properties.
 
 ## Variable Patterns
 
@@ -27,7 +27,7 @@ Otherwise, only the specified properties are deleted.
 ### has-role
 
 ```sql
-match $x id "evolution" delete $x has-role descendant;
+match $x id "evolution"; delete $x has-role descendant;
 ```
 ```java
 qb.match(var("x").id("evolution")).delete(var("x").hasRole("descendant"));
@@ -38,10 +38,10 @@ Removes the given role from the relation type.
 ### plays-role
 
 ```sql
-match $x id "type" delete $x plays-role attacking-type;
+match $x id "pokemon-type"; delete $x plays-role attacking-type;
 ```
 ```java
-qb.match(var("x").id("type")).delete(var("x").playsRole("attacking-type"));
+qb.match(var("x").id("pokemon-type")).delete(var("x").playsRole("attacking-type"));
 ```
 
 Disallows the concept type from playing the given role.
@@ -49,7 +49,7 @@ Disallows the concept type from playing the given role.
 ### has
 
 ```sql
-match $x id "Bulbasaur" delete $x has weight;
+match $x id "Bulbasaur"; delete $x has weight;
 ```
 ```java
 qb.match(var("x").id("Bulbasaur")).delete(var("x").has("weight"));
